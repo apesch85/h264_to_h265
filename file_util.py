@@ -1,11 +1,4 @@
-import glob
 import os
-from absl import app
-from absl import flags
-
-FLAGS = flags.FLAGS
-
-flags.DEFINE_string('video_dir', '', 'Path to video files')
 
 
 def GetFiles(dir_path):
@@ -28,22 +21,3 @@ def FilterFiles(file_list):
     return (correct_path, broken_path)
 
 
-def main(unused):
-    del unused
-
-    file_list = GetFiles(FLAGS.video_dir)
-    video_paths = FilterFiles(file_list)
-
-    good_paths = video_paths[0]
-    broken_paths = video_paths[1]
-
-    for file_name in good_paths:
-        print('Good path: %s' % file_name)
-
-    for file_name in broken_paths:
-        print('Broken path: %s' % file_name)
-
-    print('Good paths: %s | Broken paths: %s' % (len(good_paths), len(broken_paths)))
-
-if __name__ == '__main__':
-    app.run(main)

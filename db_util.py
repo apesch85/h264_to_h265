@@ -15,18 +15,16 @@ def DbChecker(db_path):
         vid_read = csv.reader(db_reader)
         # Pass reader object to list() to get a list of lists
         tracked_vids = list(vid_read)
-        print(list_of_rows)
+
+    return tracked_vids
 
 
-def DbWriter(db_path, video_list, mode):
+def DbWriter(db_path, video_list):
     
     # CSV schema -
     # video_path, tcode_status, format, added, completed
 
-    with open(db_path, 'w') as db_writer:
-        # creating a csv writer object
+    with open(db_path) as db_writer:
         vid_write = csv.writer(db_writer)
-
-        # writing the data rows
         vid_write.writerows(video_list)
 
