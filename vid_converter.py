@@ -43,6 +43,24 @@ def Transcode(vid_file):
             'crf=16',
             vid_file
             ]
+    tcode = subprocess.Popen(ffmpeg_command,
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT)
+
+    while tcode.poll() is None:
+        time.sleep(0.5)
+
+    return_code = tcode.returncode
+    if return_code == 0:
+        print('File: %s transcoded successfully!')
+    else:
+        print('File: %s transcoded unsuccessfully...')
+
+
+def ProcessFiles(to_process):
+    for vid in to_process:
+
+
 
 
 def main(unused):
