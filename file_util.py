@@ -1,4 +1,6 @@
 import os
+import subprocess
+import datetime
 
 
 def GetFiles(dir_path):
@@ -12,12 +14,55 @@ def GetFiles(dir_path):
 
 
 def FilterFiles(file_list):
+    video_stats = []
     file_filter = ['mov', 'mkv', 'mp4', 'avi']
+    today = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     video_list = [video for video in file_list if video[-3:] in file_filter]
     
     correct_path = [video for video in video_list if os.path.isfile(video)]
+    if correct_path:
+        for video in correct_path:
+            file_stats = CheckFormat(video)
+            if file_stats:
+                file_format = file_stats[0]
+                file_size = file_stats[1]
+
+                if file_format != 'High Efficiency Video Coding':
+                    video_stats.append([video, 'NEW', file_format, file_size, today, 'N/A'])
+
     broken_path = [video for video in video_list if video not in correct_path]
 
-    return (correct_path, broken_path)
 
+    return (video_stats, broken_path)
+
+
+def CheckFormat(vid_file):
+    media_info = '/usr/bin/mediainfo'
+    format_list = []
+    
+    try:
+        media_stats = subprocess.check_output(
+                [
+                    media_info,
+                    vid_file
+                ]).decode("utf-8")
+    except:
+        return False
+
+    stats_list = media_stats.split('\n')
+
+    for stat in stats_list:
+        if stat.lower().startswith('format/info'):
+            print('Checking format of file: %s' % vid_file)
+            vid_format = stat.split(':')[1].strip(' ')
+            format_list.append(vid_format)
+        if stat.lower().startswith('file size'):
+            print('Checking size of file: %s' % vid_file)
+            vid_size = stat.split(':')[1].strip(' ')
+    try:
+        found_format = format_list[0]
+    except:
+        found_format = 'UNKNOWN'
+
+    return [found_format, vid_size]
 

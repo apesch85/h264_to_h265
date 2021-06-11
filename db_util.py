@@ -1,12 +1,5 @@
 import csv
 
-from absl import app
-from absl import flags
-
-FLAGS = flags.FLAGS
-
-flags.DEFINE_string('db_path', '', 'Location of the video db')
-
 
 def DbChecker(db_path):
     
@@ -19,12 +12,12 @@ def DbChecker(db_path):
     return tracked_vids
 
 
-def DbWriter(db_path, video_list):
+def DbWriter(db_path, mode, video_list):
     
     # CSV schema -
-    # video_path, tcode_status, format, added, completed
+    # video_path, tcode_status, format, original_size, added, completed
 
-    with open(db_path) as db_writer:
+    with open(db_path, mode, newline="") as db_writer:
         vid_write = csv.writer(db_writer)
         vid_write.writerows(video_list)
 

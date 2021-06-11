@@ -4,7 +4,10 @@ import file_util
 from absl import app
 from absl import flags
 
+import os
+import time
 import subprocess
+import datetime
 
 FLAGS = flags.FLAGS
 
@@ -16,7 +19,7 @@ def GetNewFiles(vid_list):
 
     to_process = []
 
-    for vid in vid_list:
+    for vid in vid_list[0]:
         if vid[1] == 'NEW':
             to_process.append(vid)
 
@@ -31,22 +34,25 @@ def Transcode(vid_file):
 
     #ffmpeg -i INPUT -c:v libx265 -c:a copy -x265-params crf=25 OUT.mov
     #ffmpeg -i h264Input.mp4 -c:v libx265 -crf 16 -c:a copy h265output.mp4
+    orig_ext = vid_file[-4:]
     ffmpeg_command = [
             ffmpeg,
-            'i',
-            vid_file,
+            '-i',
+            '%s' % vid_file,
             '-c:v',
             'libx265',
             '-c:a',
             'copy',
-            '-x265-paramdds',
-            'crf=16',
-            vid_file
+            '-y',
+            '-threads',
+            '16',
+            '-preset',
+            'veryfast',
+            vid_file.replace(orig_ext, '_new%s' % orig_ext)
             ]
-    tcode = subprocess.Popen(ffmpeg_command,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.STDOUT)
+    tcode = subprocess.Popen(ffmpeg_command)
 
+    print('      Executing command: %s' % ' '.join(ffmpeg_command))
     while tcode.poll() is None:
         time.sleep(0.5)
 
@@ -56,11 +62,47 @@ def Transcode(vid_file):
     else:
         print('File: %s transcoded unsuccessfully...')
 
-
-def ProcessFiles(to_process):
-    for vid in to_process:
+    return return_code
 
 
+def CheckFormat(vid_file):
+    media_info = '/usr/bin/mediainfo'
+    media_stats = subprocess.check_output(
+            [
+                media_info,
+                vid_file
+            ]).decode("utf-8") 
+    stats_list = media_stats.split('\n')
+
+    for stat in stats_list:
+        if stat.lower().startswith('format/info'):
+            print('Checking format of file: %s' % vid_file)
+            vid_format = stat.split(':')[1].strip(' ')
+            return vid_format
+
+
+def HandleNewFiles(new_files):
+    # video_path, tcode_status, format, added, completed
+
+    completed_transcodes = []
+    failed_transcodes = []
+    attempt_count = 1
+    
+    new_h264 = [vid for vid in new_files if CheckFormat(vid) == 'Advanced Video Codec']
+    for vid_file in new_h264:
+        transcode_result = Transcode(vid_file)
+        if transcode_result == 0:
+            today = datetime.datetime.now().strftime('%Y-%b-%d')
+            completed_transcodes.append(
+                    [
+                        vid_file,
+                        'SUCCESS',
+                        'H265'
+                        ]
+
+                        )
+        else:
+            failed_transcodes.append(vid_file)
 
 
 def main(unused):
@@ -71,14 +113,13 @@ def main(unused):
 
     good_paths = video_paths[0]
     broken_paths = video_paths[1]
-
-    for file_name in good_paths:
-        print('Good path: %s' % file_name)
-
-    for file_name in broken_paths:
-        print('Broken path: %s' % file_name)
+    existing_paths = file_util.db_utili.DbChecker(FLAGS.db_path)
 
     print('Good paths: %s | Broken paths: %s' % (len(good_paths), len(broken_paths)))
+
+    HandleNewFiles(good_paths)
+
+
 
 if __name__ == '__main__':
     app.run(main)
