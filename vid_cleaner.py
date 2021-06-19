@@ -5,7 +5,14 @@ import os
 
 import psutil
 
-processed_files = glob.glob('/mnt/drobo/TV Shows/**/*_new.*', recursive=True)
+from absl import app
+from absl import flags
+
+FLAGS = flags.FLAGS
+
+flags.DEFINE_string('video_dir', '', 'Path to video files')
+
+processed_files = glob.glob('%s/**/*_new.*' % FLAGS.video_dir, recursive=True)
 
 def CleanFiles(processed_files):
     for file_name in processed_files:

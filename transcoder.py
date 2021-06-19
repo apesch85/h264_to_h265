@@ -13,9 +13,12 @@ from absl import app
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string('db_path', '', 'Location of the video db')
+flags.DEFINE_string('video_dir', '', 'Destination of video files')
 
 transcode_slots = ['', '', '']
 status_list = []
+
+logging.basicConfig(level=logging.DEBUG)
 
 def TranscodeRunner(vid):
   if not vid.job:
