@@ -1,17 +1,8 @@
-import db_util
-import file_util
-
-from absl import app
-from absl import flags
-
 import os
 import time
 import subprocess
 import datetime
 
-FLAGS = flags.FLAGS
-
-flags.DEFINE_string('video_dir', '', 'Path to video files')
 
 def GetNewFiles(vid_list):
     # CSV schema -
@@ -88,38 +79,19 @@ def HandleNewFiles(new_files):
     failed_transcodes = []
     attempt_count = 1
     
-    new_h264 = [vid for vid in new_files if CheckFormat(vid) == 'Advanced Video Codec']
+    new_h264 = [
+      vid for vid in new_files if CheckFormat(vid) == 'Advanced Video Codec'
+      ]
     for vid_file in new_h264:
         transcode_result = Transcode(vid_file)
         if transcode_result == 0:
             today = datetime.datetime.now().strftime('%Y-%b-%d')
             completed_transcodes.append(
-                    [
-                        vid_file,
-                        'SUCCESS',
-                        'H265'
-                        ]
-
-                        )
+              [
+                vid_file,
+                'SUCCESS',
+                'H265'
+                ]
+                )
         else:
             failed_transcodes.append(vid_file)
-
-
-def main(unused):
-    del unused
-
-    file_list = file_util.GetFiles(FLAGS.video_dir)
-    video_paths = file_util.FilterFiles(file_list)
-
-    good_paths = video_paths[0]
-    broken_paths = video_paths[1]
-    existing_paths = file_util.db_utili.DbChecker(FLAGS.db_path)
-
-    print('Good paths: %s | Broken paths: %s' % (len(good_paths), len(broken_paths)))
-
-    HandleNewFiles(good_paths)
-
-
-
-if __name__ == '__main__':
-    app.run(main)

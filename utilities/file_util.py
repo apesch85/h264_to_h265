@@ -3,6 +3,12 @@ import subprocess
 import datetime
 
 
+class Format:
+  def __init__(self, found_format, vid_size):
+    self.found_format = found_format
+    self.vid_size = vid_size
+
+
 def GetFiles(dir_path):
     # traverse root directory, and list directories as dirs and files as files
     file_list = []
@@ -64,5 +70,4 @@ def CheckFormat(vid_file):
     except:
         found_format = 'UNKNOWN'
 
-    return [found_format, vid_size]
-
+    return Format(found_format, vid_size)
