@@ -49,9 +49,9 @@ def Transcode(vid_file):
 
     return_code = tcode.returncode
     if return_code == 0:
-        print('File: %s transcoded successfully!')
+        print('File: %s transcoded successfully!' % vid_file)
     else:
-        print('File: %s transcoded unsuccessfully...')
+        print('File: %s transcoded unsuccessfully...' % vid_file)
 
     return return_code
 
