@@ -3,7 +3,6 @@ from utilities import db_util
 from utilities import file_util
 import vid_cleaner
 
-from concurrent import futures
 import datetime
 import time
 import logging
@@ -23,6 +22,16 @@ status_list = []
 logging.basicConfig(level=logging.DEBUG)
 
 def TranscodeRunner(vid):
+  """Spawns an ffmpeg process to transcode the provided video file.
+  
+  This function doesn't do robust file integrity checking to ensure the file
+    is actually a video file. For this reason, we catch all exceptions and
+    track them as failed jobs.
+
+  Args:
+    vid: A vid_util.Video object used for determining the video file path. The
+      spawned ffmpeg job is also added to the object.
+  """
   if not vid.job:
     try:
       job = converter_util.Transcode(vid.video_path)
@@ -37,6 +46,17 @@ def TranscodeRunner(vid):
         
 
 def TranscodeChecker(vid):
+  """Checks an ffmpeg process to see if it has completed.
+  
+  Args: 
+    vid: A vid_util.Video object used for determining -
+      * The video file path. 
+      * job status
+      Once the job is completed, the object is updated with some stats.
+  
+  Returns:
+    Boolean: True if the job is done, else False.
+  """
   if vid.job.poll() is not None:
     if vid.job.returncode == 0:
       logging.info('SUCCESS | %s' % vid.video_path)
@@ -64,6 +84,8 @@ def main(unused):
   db_check = db_util.Database(FLAGS.db_path, 'r')
   files = db_check.DbRead()
 
+  # Iterate while there are available slots, then wait until slots become
+  # available. 
   vid_index = 0
   while '' in transcode_slots and vid_index <= len(files):
     vid = files[vid_index]

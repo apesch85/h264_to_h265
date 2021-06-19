@@ -6,6 +6,8 @@ import logging
 
 
 def GetNewFiles(vid_list):
+  """ Return a list of files that are marked as 'NEW'.
+  """
     # CSV schema -
     # video_path, tcode_status, format, added, completed
 
