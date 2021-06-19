@@ -24,15 +24,10 @@ logging.basicConfig(level=logging.DEBUG)
 def TranscodeRunner(vid):
   if not vid.job:
     try:
-      logging.info('Starting job...')
       job = converter_util.Transcode(vid.video_path)
-      logging.info('Job started, storing job object...')
       vid.job = job
-      logging.info('Job stored,  finding open slot to reserve...')
       slot = transcode_slots.index('')
-      logging.info('Slot found, reserving it...')
       transcode_slots[slot] = vid
-      logging.info('Slot reserved...')
       logging.info('START | %s' % vid.video_path)
     except:
       logging.critical('FAILURE | %s' % vid.video_path)
