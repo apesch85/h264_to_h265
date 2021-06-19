@@ -27,20 +27,16 @@ def TranscodeRunner(vid):
       try:
         logging.info('Starting job...')
         future = executor.submit(converter_util.Transcode(vid.video_path))
-        logging.info('Job started, getting job object...')
-        logging.info(type(future))
-        logging.info(dir(future))
-        logging.info(future.done())
-        logging.info(dir(future.result))
-        job = future.result()
-        logging.info('Got job object, storing job object...')
-        vid.job = job
+        logging.info('Job started, storing job object...')
+        logging.info('Job status: %s' % future.done())
+        vid.job = future
         logging.info('Job stored,  finding open slot to reserve...')
         slot = transcode_slots.index('')
         logging.info('Slot found, reserving it...')
         transcode_slots[slot] = vid
         logging.info('Slot reserved...')
         logging.info('START | %s' % vid.video_path)
+        input('wait')
       except Exception as e:
         logging.critical('FAILURE | %s' % vid.video_path)
         logging.critical(e)
