@@ -36,8 +36,8 @@ def TranscodeRunner(vid):
         
 
 def TranscodeChecker(vid):
-  if vid.job.done():
-    if vid.job.result() == 0:
+  if vid.job.poll() is not None():
+    if vid.job.returncode == 0:
       logging.info('SUCCESS | %s' % vid.video_path)
       today = datetime.datetime.now().strftime('%Y-%b-%d')
       vid.tcode_status = 'Completed'
@@ -50,8 +50,8 @@ def TranscodeChecker(vid):
       vid.tcode_status = 'FAILED'
       vid.completed = today
       status_list.append(vid)
-      return False
-  elif vid.job.running():
+      return True
+  elif vid.job.poll() is None:
     return False
 
 
