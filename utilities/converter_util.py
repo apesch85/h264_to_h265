@@ -45,15 +45,12 @@ def Transcode(vid_file):
     tcode = subprocess.Popen(ffmpeg_command)
 
     logging.info('      Executing command: %s' % ' '.join(ffmpeg_command))
-    #while tcode.poll() is None:
-    #   time.sleep(0.5)
+    while tcode.poll() is None:
+       time.sleep(0.5)
 
-    #return_code = tcode.returncode
-    #    print('File: %s transcoded successfully!' % vid_file)
-    #else:
-    #    print('File: %s transcoded unsuccessfully...' % vid_file)
+    return_code = tcode.returncode
 
-    return tcode
+    return return_code
 
 
 def CheckFormat(vid_file):
