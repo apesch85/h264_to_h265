@@ -20,6 +20,7 @@ def GetNewFiles(vid_list):
 
 def Transcode(vid_file):
     ffmpeg = '/usr/bin/ffmpeg'
+    DETACHED_PROCESS = 0x00000008
 
     if not os.path.isfile(ffmpeg):
         raise Exception('FFMPEG not found. Install it!')
