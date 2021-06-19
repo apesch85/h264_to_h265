@@ -56,7 +56,6 @@ def main(unused):
   del unused
   db_check = db_util.Database(FLAGS.db_path, 'r')
   files = db_check.DbRead()
-  status_list = []
 
   vid_index = 0
   while '' in transcode_slots:
@@ -77,10 +76,10 @@ def main(unused):
         if TranscodeChecker(vid_job):
           transcode_slots[index] = ''
 
-    # CSV schema -
-    # video_path, tcode_status, format, original_size, added, completed
-    db = db_util.Database(FLAGS.db_path, 'w', vid_list=status_list)
-    db.DbWrite()
+  # CSV schema -
+  # video_path, tcode_status, format, original_size, added, completed
+  db = db_util.Database(FLAGS.db_path, 'w', vid_list=status_list)
+  db.DbWrite()
 
 
 if __name__ == '__main__':
