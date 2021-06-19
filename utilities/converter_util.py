@@ -42,7 +42,7 @@ def Transcode(vid_file):
             'veryfast',
             vid_file.replace(orig_ext, '_new%s' % orig_ext)
             ]
-    tcode = subprocess.Popen(ffmpeg_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    tcode = subprocess.Popen(ffmpeg_command, shell=True)
     tcode.communicate()
 
     logging.info('      Executing command: %s' % ' '.join(ffmpeg_command))
