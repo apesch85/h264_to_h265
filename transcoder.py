@@ -60,6 +60,7 @@ def main(unused):
 
   vid_index = 0
   while '' in transcode_slots:
+    vid = files[vid_index]
     logging.info('PROCESSING | %s of %s' % (vid_index + 1, len(files)))
     vid.format = file_util.CheckFormat(vid.video_path).found_format
     TranscodeRunner(files[vid_index])
