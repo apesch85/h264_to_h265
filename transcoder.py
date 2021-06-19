@@ -34,7 +34,6 @@ def TranscodeRunner(vid):
       transcode_slots[slot] = vid
       logging.info('Slot reserved...')
       logging.info('START | %s' % vid.video_path)
-      input('wait')
     except:
       logging.critical('FAILURE | %s' % vid.video_path)
       vid.tcode_status = 'FAILED'
