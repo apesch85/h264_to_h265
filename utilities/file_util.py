@@ -1,3 +1,4 @@
+from . import vid_util
 import os
 import subprocess
 import datetime
@@ -27,14 +28,19 @@ def FilterFiles(file_list):
     
     correct_path = [video for video in video_list if os.path.isfile(video)]
     if correct_path:
-        for video in correct_path:
-            file_stats = CheckFormat(video)
-            if file_stats:
-                file_format = file_stats[0]
-                file_size = file_stats[1]
-
-                if file_format != 'High Efficiency Video Coding':
-                    video_stats.append([video, 'NEW', file_format, file_size, today, 'N/A'])
+      for video in correct_path:
+        file_stats = CheckFormat(video)
+        if file_stats:
+          if file_stats.found_format != 'High Efficiency Video Coding':
+            vid = vid_util.Video(
+              video, 
+              'NEW', 
+              file_stats.found_format, 
+              file_stats.vid_size, 
+              today, 
+              'N/A'
+              )
+            video_stats.append(vid)
 
     broken_path = [video for video in video_list if video not in correct_path]
 
