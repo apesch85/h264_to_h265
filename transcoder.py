@@ -39,7 +39,7 @@ def TranscodeRunner(vid):
         
 
 def TranscodeChecker(vid):
-  if vid.job.poll() is not None():
+  if vid.job.poll() is not None:
     if vid.job.returncode == 0:
       logging.info('SUCCESS | %s' % vid.video_path)
       today = datetime.datetime.now().strftime('%Y-%b-%d')
