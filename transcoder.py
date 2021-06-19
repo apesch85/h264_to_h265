@@ -14,8 +14,9 @@ FLAGS = flags.FLAGS
 
 flags.DEFINE_string('db_path', '', 'Location of the video db')
 flags.DEFINE_string('video_dir', '', 'Destination of video files')
+flags.DEFINE_integer('num_threads', 0, 'Number of threads to use for ffmpeg jobs')
 
-transcode_slots = ['', '', '']
+transcode_slots = []
 status_list = []
 
 logging.basicConfig(level=logging.DEBUG)
@@ -29,8 +30,9 @@ def TranscodeRunner(vid):
         slot = transcode_slots.index('')
         transcode_slots[slot] = vid
         logging.info('START | %s' % vid.video_path)
-      except:
+      except as e:
         logging.critical('FAILURE | %s' % vid.video_path)
+        logging.critical(e)
         vid.tcode_status = 'FAILED'
         status_list.append(vid)
         
@@ -56,7 +58,10 @@ def TranscodeChecker(vid):
 
 
 def main(unused):
-  del unused
+  del unused 
+  for i in range(FLAGS.num_threads):
+    transcode_slots.append('')
+    
   db_check = db_util.Database(FLAGS.db_path, 'r')
   files = db_check.DbRead()
 
