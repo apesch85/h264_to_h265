@@ -23,7 +23,7 @@ def main(unused):
 
     all_files = file_util.GetFiles(FLAGS.video_dir)
     video_files = file_util.FilterFiles(all_files)[0]
-    db_writer = db_util.Database(FLAGS.db_path, 'w', write_list=video_files)
+    db_writer = db_util.Database(FLAGS.db_path, 'w', vid_list=video_files)
     db_writer.DbWrite()
 
 

@@ -1,5 +1,5 @@
 import csv
-import vid_util
+from . import vid_util
 
 
 class Database:
