@@ -1,6 +1,7 @@
 from utilities import converter_util
 from utilities import db_util
 from utilities import file_util
+import vid_cleaner
 
 from concurrent import futures
 import datetime
@@ -81,6 +82,7 @@ def main(unused):
         logging.info('      Job: %s' % vid_job.video_path)
         if TranscodeChecker(vid_job):
           transcode_slots[index] = ''
+          vid_cleaner.CleanFile(vid_job.video_path)
 
   # CSV schema -
   # video_path, tcode_status, format, original_size, added, completed
