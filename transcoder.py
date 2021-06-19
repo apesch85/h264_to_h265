@@ -31,6 +31,7 @@ def TranscodeRunner(vid):
         logging.info(type(future))
         logging.info(dir(future))
         logging.info(future.done())
+        logging.info(future.result)
         job = future.result()
         logging.info('Got job object, storing job object...')
         vid.job = job
