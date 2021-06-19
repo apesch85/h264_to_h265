@@ -58,14 +58,16 @@ def main(unused):
   files = db_check.DbRead()
   status_list = []
 
-  for vid in files:
+  vid_index = 0
+  while '' in transcode_slots:
     logging.info('PROCESSING | %s of %s' % (files.index(vid) + 1, len(files)))
     vid.format = file_util.CheckFormat(vid.video_path).found_format
-    while '' in transcode_slots:
-      TranscodeRunner(vid)
+    TranscodeRunner(files[vid_index])
+    vid_index += 1
     
     while '' not in transcode_slots:
       time.sleep(10)
+      logging.info('Progress: %s of %s' % (vid_index + 1, len(files)))
       logging.warning('All available job slots full!')
       logging.info('   Checking active jobs...')
       for index, vid_job in enumerate(transcode_slots):
