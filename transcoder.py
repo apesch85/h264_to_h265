@@ -25,8 +25,9 @@ def TranscodeRunner(vid):
   if not vid.job:
     with futures.ThreadPoolExecutor() as executor:
       try:
-        job = executor.submit(converter_util.Transcode(vid.video_path)).result()
-        vid.job = job
+        job = executor.submit(converter_util.Transcode(vid.video_path))
+        job_return = job.result()
+        vid.job = job_return
         slot = transcode_slots.index('')
         transcode_slots[slot] = vid
         logging.info('START | %s' % vid.video_path)
