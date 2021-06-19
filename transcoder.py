@@ -28,7 +28,6 @@ def TranscodeRunner(vid):
         logging.info('Starting job...')
         job = executor.submit(converter_util.Transcode(vid.video_path))
         logging.info('Job started, getting job object...')
-        logging.info(job.poll())
         job_return = job.result()
         logging.info('Got job object, storing job object...')
         vid.job = job_return
