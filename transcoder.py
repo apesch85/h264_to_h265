@@ -36,19 +36,22 @@ def TranscodeRunner(vid):
         
 
 def TranscodeChecker(vid):
-  if vid.job.poll() == 0:
-    logging.info('SUCCESS | %s' % vid.video_path)
-    today = datetime.datetime.now().strftime('%Y-%b-%d')
-    vid.tcode_status = 'Completed'
-    vid.completed = today
-    status_list.append(vid)
-    return True
-  else:
-    logging.critical('FAILURE | %s' % vid.video_path)
-    today = datetime.datetime.now().strftime('%Y-%b-%d')
-    vid.tcode_status = 'FAILED'
-    vid.completed = today
-    status_list.append(vid)
+  if vid.job.done():
+    if vid.job.result() == 0:
+      logging.info('SUCCESS | %s' % vid.video_path)
+      today = datetime.datetime.now().strftime('%Y-%b-%d')
+      vid.tcode_status = 'Completed'
+      vid.completed = today
+      status_list.append(vid)
+      return True
+    else:
+      logging.critical('FAILURE | %s' % vid.video_path)
+      today = datetime.datetime.now().strftime('%Y-%b-%d')
+      vid.tcode_status = 'FAILED'
+      vid.completed = today
+      status_list.append(vid)
+      return False
+  elif vid.job.running():
     return False
 
 
