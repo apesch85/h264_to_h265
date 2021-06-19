@@ -65,7 +65,7 @@ def main(unused):
   files = db_check.DbRead()
 
   vid_index = 0
-  while '' in transcode_slots:
+  while '' in transcode_slots and vid_index <= len(files):
     vid = files[vid_index]
     logging.info('PROCESSING | %s of %s' % (vid_index + 1, len(files)))
     if file_util.CheckFormat(vid.video_path):
