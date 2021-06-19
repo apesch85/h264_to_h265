@@ -20,7 +20,6 @@ def GetNewFiles(vid_list):
 
 def Transcode(vid_file):
     ffmpeg = '/usr/bin/ffmpeg'
-    DETACHED_PROCESS = 0x00000008
 
     if not os.path.isfile(ffmpeg):
         raise Exception('FFMPEG not found. Install it!')
@@ -43,7 +42,7 @@ def Transcode(vid_file):
             'veryfast',
             vid_file.replace(orig_ext, '_new%s' % orig_ext)
             ]
-    tcode = subprocess.Popen(ffmpeg_command, shell=False, stdin=None, stdout=None, stderr=None, creationflags=DETACHED_PROCESS )
+    tcode = subprocess.Popen(ffmpeg_command, shell=True, stdin=None, stdout=None, stderr=None)
     tcode.communicate()
 
     logging.info('      Executing command: %s' % ' '.join(ffmpeg_command))
