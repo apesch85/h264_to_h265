@@ -81,6 +81,7 @@ def main(unused):
       for index, vid_job in enumerate(transcode_slots):
         logging.info('      Job: %s' % vid_job.video_path)
         if TranscodeChecker(vid_job):
+          logging.info('REMOVING: %s' % vid_job.video_path)
           transcode_slots[index] = ''
           vid_cleaner.CleanFile(vid_job.video_path)
 
