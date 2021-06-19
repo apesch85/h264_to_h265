@@ -5,14 +5,6 @@ import os
 
 import psutil
 
-from absl import app
-from absl import flags
-
-FLAGS = flags.FLAGS
-
-flags.DEFINE_string('video_dir', '', 'Path to video files')
-flags.DEFINE_boolean('tv_dir', False, 'Videos are in a TV directory')
-
 
 def CleanFiles(processed_files):
     for file_name in processed_files:
@@ -56,23 +48,3 @@ def checkIfProcessRunning(processName):
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
     return False
-
-
-def main(unused_argv):
-  del unused_argv
-  
-  if FLAGS.tv_dir:
-    processed_files = glob.glob(
-      '%s/**/*_new.*' % FLAGS.video_dir, 
-      recursive=True
-      )
-  else:
-    processed_files = glob.glob(
-      '%s/*_new.*' % FLAGS.video_dir, 
-      recursive=True
-      )
-    CleanFiles(processed_files)
-
-
-if __name__ == '__main__':
-    app.run(main)
