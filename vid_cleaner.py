@@ -29,6 +29,19 @@ def CleanFiles(processed_files):
                 print(
                   'File not removed.'
                   'It might still be in processing: %s' % original_name)
+                
+                
+def CleanFile(processed_file):
+  if checkIfProcessRunning(processed_file):
+    print('File is being processed. Standing down: %s' % processed_file)
+  else:
+    try:
+      os.remove(processed_file)
+      print('Removed file: %s' % original_name)
+    except:
+      print(
+        'File not removed.'
+        'It might still be in processing: %s' % processed_file)
 
 
 def checkIfProcessRunning(processName):
