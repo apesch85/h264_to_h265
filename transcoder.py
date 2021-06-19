@@ -37,10 +37,8 @@ def TranscodeRunner(vid):
       input('wait')
     except:
       logging.critical('FAILURE | %s' % vid.video_path)
-      logging.critical(e)
       vid.tcode_status = 'FAILED'
       status_list.append(vid)
-      raise Exception('IT BROKE')
         
 
 def TranscodeChecker(vid):
