@@ -29,6 +29,8 @@ def TranscodeRunner(vid):
         future = executor.submit(converter_util.Transcode(vid.video_path))
         logging.info('Job started, getting job object...')
         logging.info(type(future))
+        logging.info(dir(future))
+        logging.info(type(future.done()))
         job = future.result()
         logging.info('Got job object, storing job object...')
         vid.job = job
