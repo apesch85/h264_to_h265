@@ -30,7 +30,7 @@ def TranscodeRunner(vid):
         slot = transcode_slots.index('')
         transcode_slots[slot] = vid
         logging.info('START | %s' % vid.video_path)
-      except as e:
+      except Exception as e:
         logging.critical('FAILURE | %s' % vid.video_path)
         logging.critical(e)
         vid.tcode_status = 'FAILED'
