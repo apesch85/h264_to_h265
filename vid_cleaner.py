@@ -45,7 +45,9 @@ def checkIfProcessRunning(processName):
     return False
 
 
-def main():
+def main(unused_argv):
+  del unused_argv
+  
   if FLAGS.tv_dir:
     processed_files = glob.glob(
       '%s/**/*_new.*' % FLAGS.video_dir, 
