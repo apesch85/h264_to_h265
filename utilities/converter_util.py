@@ -2,6 +2,7 @@ import os
 import time
 import subprocess
 import datetime
+import logging
 
 
 def GetNewFiles(vid_list):
@@ -43,16 +44,16 @@ def Transcode(vid_file):
             ]
     tcode = subprocess.Popen(ffmpeg_command)
 
-    print('      Executing command: %s' % ' '.join(ffmpeg_command))
-    while tcode.poll() is None:
-        time.sleep(0.5)
+    logging.info('      Executing command: %s' % ' '.join(ffmpeg_command))
+    #while tcode.poll() is None:
+    #   time.sleep(0.5)
 
-    return_code = tcode.returncode
+    #return_code = tcode.returncode
     #    print('File: %s transcoded successfully!' % vid_file)
     #else:
     #    print('File: %s transcoded unsuccessfully...' % vid_file)
 
-    return return_code
+    return tcode
 
 
 def CheckFormat(vid_file):
