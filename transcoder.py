@@ -26,12 +26,11 @@ def TranscodeRunner(vid):
     with futures.ThreadPoolExecutor() as executor:
       try:
         logging.info('Starting job...')
-        job = executor.submit(converter_util.Transcode(vid.video_path))
+        future = executor.submit(converter_util.Transcode(vid.video_path))
         logging.info('Job started, getting job object...')
-        logging.info(type(job))
-        job_return = job.result()
+        job = future.result()
         logging.info('Got job object, storing job object...')
-        vid.job = job_return
+        vid.job = job
         logging.info('Job stored,  finding open slot to reserve...')
         slot = transcode_slots.index('')
         logging.info('Slot found, reserving it...')
