@@ -50,7 +50,6 @@ class Database:
           )
     return write_list
 
-
   def DbWrite(self):
     # CSV schema -
     # video_path, tcode_status, format, original_size, added, completed

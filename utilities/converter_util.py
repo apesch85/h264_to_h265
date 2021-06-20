@@ -51,6 +51,7 @@ def CheckFormat(vid_file):
   Returns:
     vid_format: A string representing the video file format for a video file.
   """
+  
   media_info = '/usr/bin/mediainfo'
   media_stats = subprocess.check_output(
           [
