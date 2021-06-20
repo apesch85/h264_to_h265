@@ -20,7 +20,8 @@ def Transcode(vid_file):
   #ffmpeg -i INPUT -c:v libx265 -c:a copy -x265-params crf=25 OUT.mov
   #ffmpeg -i h264Input.mp4 -c:v libx265 -crf 16 -c:a copy h265output.mp4
   orig_ext = vid_file[-4:]
-  """
+  ffmpeg = '/home/apesch/video_converter/bin/ffpb'
+
   ffmpeg_command = [
           ffmpeg,
           '-i',
@@ -56,6 +57,7 @@ def Transcode(vid_file):
       encoding=None, 
       tqdm=ffpb.tqdm
       )
+  """
 
   logging.info('      Executing command: %s' % ' '.join(ffmpeg_command))
 
