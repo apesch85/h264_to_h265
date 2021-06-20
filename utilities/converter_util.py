@@ -19,23 +19,6 @@ def Transcode(vid_file):
   #ffmpeg -i INPUT -c:v libx265 -c:a copy -x265-params crf=25 OUT.mov
   #ffmpeg -i h264Input.mp4 -c:v libx265 -crf 16 -c:a copy h265output.mp4
   orig_ext = vid_file[-4:]
-  ffpb.main(argv=[
-          '-i',
-          '%s' % vid_file,
-          '-c:v',
-          'libx265',
-          '-c:a',
-          'copy',
-          '-y',
-          '-threads',
-          '16',
-          '-preset',
-          'veryfast',
-          vid_file.replace(orig_ext, '_new%s' % orig_ext)
-          ], 
-            stream=sys.stderr, 
-            encoding=None, 
-            tqdm=tqdm):
   """
   ffmpeg_command = [
           ffmpeg,
@@ -53,7 +36,25 @@ def Transcode(vid_file):
           vid_file.replace(orig_ext, '_new%s' % orig_ext)
           ]
   """
-  tcode = subprocess.Popen(ffmpeg_command)
+  tcode = ffpb.main(
+    argv=[
+      '-i',
+      '%s' % vid_file,
+      '-c:v',
+      'libx265',
+      '-c:a',
+      'copy',
+      '-y',
+      '-threads',
+      '16',
+      '-preset',
+      'veryfast',
+      vid_file.replace(orig_ext, '_new%s' % orig_ext)
+      ], 
+      stream=sys.stderr, 
+      encoding=None, 
+      tqdm=tqdm
+      )
 
   logging.info('      Executing command: %s' % ' '.join(ffmpeg_command))
 
