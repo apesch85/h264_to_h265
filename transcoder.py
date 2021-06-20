@@ -42,7 +42,6 @@ def TranscodeRunner(vid):
     except Exception as e:
       logging.critical('FAILURE | %s' % vid.video_path)
       logging.critical(e)
-      input('A bad thing happened.')
       vid.tcode_status = 'FAILED'
       status_list.append(vid)
         
