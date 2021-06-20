@@ -1,4 +1,5 @@
-import os
+import ffpb
+import sys
 import subprocess
 import logging
 
@@ -53,7 +54,7 @@ def Transcode(vid_file):
       ], 
       stream=sys.stderr, 
       encoding=None, 
-      tqdm=tqdm
+      tqdm=ffpb.tqdm
       )
 
   logging.info('      Executing command: %s' % ' '.join(ffmpeg_command))
