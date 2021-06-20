@@ -3,7 +3,7 @@ import subprocess
 import logging
 
 
-def Transcode(vid_file):
+def Transcode(vid_file, ffmpeg):
   """Spawn ffmpeg processes for transcoding from H264 -> H265
 
   Args:
@@ -15,7 +15,6 @@ def Transcode(vid_file):
   Raises:
     Exception: If the FFMpeg binary is not found in /usr/bin/ffmpeg.
   """
-  ffmpeg = '/usr/bin/ffmpeg'
 
   if not os.path.isfile(ffmpeg):
       raise Exception('FFMPEG not found. Install it!')
