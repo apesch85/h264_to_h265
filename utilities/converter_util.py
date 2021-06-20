@@ -1,11 +1,9 @@
-import ffpb
-import sys
 import subprocess
 import logging
 
 
 def Transcode(vid_file):
-  """Spawn ffmpeg processes for transcoding from H264 -> H265
+  """Spawn ffpb/ffmpeg processes for transcoding from H264 -> H265
 
   Args:
     vid_file: A string representing the file path of a video file.
@@ -20,10 +18,10 @@ def Transcode(vid_file):
   #ffmpeg -i INPUT -c:v libx265 -c:a copy -x265-params crf=25 OUT.mov
   #ffmpeg -i h264Input.mp4 -c:v libx265 -crf 16 -c:a copy h265output.mp4
   orig_ext = vid_file[-4:]
-  ffmpeg = '/home/apesch/video_converter/bin/ffpb'
+  ffpb = '/home/apesch/video_converter/bin/ffpb'
 
-  ffmpeg_command = [
-          ffmpeg,
+  ffpb_command = [
+          ffpb,
           '-i',
           '%s' % vid_file,
           '-c:v',
@@ -37,28 +35,7 @@ def Transcode(vid_file):
           'veryfast',
           vid_file.replace(orig_ext, '_new%s' % orig_ext)
           ]
-  tcode = subprocess.Popen(ffmpeg_command)
-  """
-  tcode = ffpb.main(
-    argv=[
-      '-i',
-      '%s' % vid_file,
-      '-c:v',
-      'libx265',
-      '-c:a',
-      'copy',
-      '-y',
-      '-threads',
-      '16',
-      '-preset',
-      'veryfast',
-      vid_file.replace(orig_ext, '_new%s' % orig_ext)
-      ], 
-      stream=sys.stderr, 
-      encoding=None, 
-      tqdm=ffpb.tqdm
-      )
-  """
+  tcode = subprocess.Popen(ffpb_command)
 
   logging.info('      Executing command: %s' % ' '.join(ffmpeg_command))
 

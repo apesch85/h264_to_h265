@@ -14,8 +14,7 @@ FLAGS = flags.FLAGS
 
 flags.DEFINE_string('db_path', '', 'Location of the video db')
 flags.DEFINE_string('video_dir', '', 'Destination of video files')
-#flags.DEFINE_string('ffmpeg_path', '/usr/bin/ffmpeg', 'Destination of ffmpeg binary')
-flags.DEFINE_integer('num_threads', 0, 'Number of threads to use for ffmpeg jobs')
+flags.DEFINE_integer('num_threads', 0, '# of threads to use for ffmpeg jobs')
 
 transcode_slots = []
 status_list = []
@@ -97,7 +96,7 @@ def main(unused):
     vid_index += 1
     
     while '' not in transcode_slots:
-      time.sleep(30)
+      time.sleep(10)
       logging.info('Progress: %s of %s' % (vid_index + 1, len(files)))
       logging.warning('All available job slots full!')
       logging.info('   Checking active jobs...')
@@ -107,7 +106,6 @@ def main(unused):
           logging.info('REMOVING: %s' % vid_job.video_path)
           vid_cleaner.CleanFile(vid_job.video_path)
           transcode_slots[index] = ''
-          
 
   # CSV schema -
   # video_path, tcode_status, format, original_size, added, completed
