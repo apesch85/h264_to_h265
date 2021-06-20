@@ -37,7 +37,7 @@ def Transcode(vid_file):
           ]
   tcode = subprocess.Popen(ffpb_command)
 
-  logging.info('      Executing command: %s' % ' '.join(ffmpeg_command))
+  logging.info('      Executing command: %s' % ' '.join(ffpb_command))
 
   return tcode
 
