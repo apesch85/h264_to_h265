@@ -104,8 +104,9 @@ def main(unused):
         logging.info('      Job: %s' % vid_job.video_path)
         if TranscodeChecker(vid_job):
           logging.info('REMOVING: %s' % vid_job.video_path)
-          transcode_slots[index] = ''
           vid_cleaner.CleanFile(vid_job.video_path)
+          transcode_slots[index] = ''
+          
 
   # CSV schema -
   # video_path, tcode_status, format, original_size, added, completed
