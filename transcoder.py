@@ -14,7 +14,7 @@ FLAGS = flags.FLAGS
 
 flags.DEFINE_string('db_path', '', 'Location of the video db')
 flags.DEFINE_string('video_dir', '', 'Destination of video files')
-flags.DEFINE_string('ffmpeg_path', '/usr/bin/ffmpeg', 'Destination of ffmpeg binary')
+#flags.DEFINE_string('ffmpeg_path', '/usr/bin/ffmpeg', 'Destination of ffmpeg binary')
 flags.DEFINE_integer('num_threads', 0, 'Number of threads to use for ffmpeg jobs')
 
 transcode_slots = []
@@ -22,7 +22,7 @@ status_list = []
 
 logging.basicConfig(level=logging.DEBUG)
 
-def TranscodeRunner(vid, ffmpeg_path):
+def TranscodeRunner(vid):
   """Spawns an ffmpeg process to transcode the provided video file.
   
   This function doesn't do robust file integrity checking to ensure the file
@@ -35,7 +35,7 @@ def TranscodeRunner(vid, ffmpeg_path):
   """
   if not vid.job:
     try:
-      job = converter_util.Transcode(vid.video_path, ffmpeg_path)
+      job = converter_util.Transcode(vid.video_path)
       vid.job = job
       slot = transcode_slots.index('')
       transcode_slots[slot] = vid
@@ -93,7 +93,7 @@ def main(unused):
     logging.info('PROCESSING | %s of %s' % (vid_index + 1, len(files)))
     if file_util.CheckFormat(vid.video_path):
       vid.format = file_util.CheckFormat(vid.video_path).found_format
-      TranscodeRunner(files[vid_index], FLAGS.ffmpeg_path)
+      TranscodeRunner(files[vid_index])
     vid_index += 1
     
     while '' not in transcode_slots:
