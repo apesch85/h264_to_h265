@@ -14,6 +14,7 @@ FLAGS = flags.FLAGS
 
 flags.DEFINE_string('db_path', '', 'Location of the video db')
 flags.DEFINE_string('video_dir', '', 'Destination of video files')
+flags.DEFINE_string('ffmpeg_path', '/usr/local/bin/ffmpeg', 'Destination of ffmpeg binary')
 flags.DEFINE_integer('num_threads', 0, 'Number of threads to use for ffmpeg jobs')
 
 transcode_slots = []
@@ -34,7 +35,7 @@ def TranscodeRunner(vid):
   """
   if not vid.job:
     try:
-      job = converter_util.Transcode(vid.video_path)
+      job = converter_util.Transcode(vid.video_path, FLAGS.ffmpeg_path)
       vid.job = job
       slot = transcode_slots.index('')
       transcode_slots[slot] = vid
