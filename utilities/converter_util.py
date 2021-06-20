@@ -3,7 +3,7 @@ import subprocess
 import logging
 
 
-def Transcode(vid_file, ffmpeg):
+def Transcode(vid_file):
   """Spawn ffmpeg processes for transcoding from H264 -> H265
 
   Args:
@@ -16,12 +16,27 @@ def Transcode(vid_file, ffmpeg):
     Exception: If the FFMpeg binary is not found in /usr/bin/ffmpeg.
   """
 
-  if not os.path.isfile(ffmpeg):
-      raise Exception('FFMPEG not found. Install it!')
-
   #ffmpeg -i INPUT -c:v libx265 -c:a copy -x265-params crf=25 OUT.mov
   #ffmpeg -i h264Input.mp4 -c:v libx265 -crf 16 -c:a copy h265output.mp4
   orig_ext = vid_file[-4:]
+  ffpb.main(argv=[
+          '-i',
+          '%s' % vid_file,
+          '-c:v',
+          'libx265',
+          '-c:a',
+          'copy',
+          '-y',
+          '-threads',
+          '16',
+          '-preset',
+          'veryfast',
+          vid_file.replace(orig_ext, '_new%s' % orig_ext)
+          ], 
+            stream=sys.stderr, 
+            encoding=None, 
+            tqdm=tqdm):
+  """
   ffmpeg_command = [
           ffmpeg,
           '-i',
@@ -37,6 +52,7 @@ def Transcode(vid_file, ffmpeg):
           'veryfast',
           vid_file.replace(orig_ext, '_new%s' % orig_ext)
           ]
+  """
   tcode = subprocess.Popen(ffmpeg_command)
 
   logging.info('      Executing command: %s' % ' '.join(ffmpeg_command))
