@@ -97,7 +97,7 @@ def main(unused):
     vid_index += 1
     
     while '' not in transcode_slots:
-      time.sleep(10)
+      time.sleep(30)
       logging.info('Progress: %s of %s' % (vid_index + 1, len(files)))
       logging.warning('All available job slots full!')
       logging.info('   Checking active jobs...')
