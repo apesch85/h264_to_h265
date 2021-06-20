@@ -14,7 +14,7 @@ FLAGS = flags.FLAGS
 
 flags.DEFINE_string('db_path', '', 'Location of the video db')
 flags.DEFINE_string('video_dir', '', 'Destination of video files')
-flags.DEFINE_string('ffmpeg_path', '/usr/local/bin/ffmpeg', 'Destination of ffmpeg binary')
+flags.DEFINE_string('ffmpeg_path', '/usr/bin/ffmpeg', 'Destination of ffmpeg binary')
 flags.DEFINE_integer('num_threads', 0, 'Number of threads to use for ffmpeg jobs')
 
 transcode_slots = []
