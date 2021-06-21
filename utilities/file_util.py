@@ -2,6 +2,7 @@ from . import vid_util
 import os
 import subprocess
 import datetime
+import psutil
 
 
 class Format:
