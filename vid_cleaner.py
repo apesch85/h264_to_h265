@@ -30,7 +30,7 @@ def CleanFile(processed_file):
   else:
     try:
       os.remove(processed_file)
-      print('Removed file: %s' % original_name)
+      logging.warning('    Removed file: %s' % processed_file)
     except Exception as e:
       logging.warning(
         'File not removed.'
