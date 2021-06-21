@@ -77,3 +77,31 @@ def CheckFormat(vid_file):
         found_format = 'UNKNOWN'
 
     return Format(found_format, vid_size)
+  
+  
+def CleanFile(processed_file):
+  if checkIfProcessRunning(processed_file):
+    print('File is being processed. Standing down: %s' % processed_file)
+  else:
+    try:
+      os.remove(processed_file)
+      logging.warning('    Removed file: %s' % processed_file)
+    except Exception as e:
+      logging.warning(
+        'File not removed.'
+        'It might still be in processing: %s' % processed_file)
+      logging.info(e)
+
+
+def checkIfProcessRunning(processName):
+    '''Check if there is an active process that with processName.'''
+
+    #Iterate over the all the running process
+    for proc in psutil.process_iter():
+        try:
+            # Check if process name contains the given name string.
+            if processName.lower() in proc.name().lower():
+                return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return False
