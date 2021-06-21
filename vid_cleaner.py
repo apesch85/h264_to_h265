@@ -2,7 +2,7 @@
 
 import glob
 import os
-
+import logging
 import psutil
 
 
@@ -17,10 +17,11 @@ def CleanFiles(processed_files):
             try:
                 os.remove(original_name)
                 print('Removed file: %s' % original_name)
-            except:
-                print(
+            except Exception as e:
+                logging.warning(
                   'File not removed.'
                   'It might still be in processing: %s' % original_name)
+                logging.info(e)
                 
                 
 def CleanFile(processed_file):
@@ -30,10 +31,11 @@ def CleanFile(processed_file):
     try:
       os.remove(processed_file)
       print('Removed file: %s' % original_name)
-    except:
-      print(
+    except Exception as e:
+      logging.warning(
         'File not removed.'
         'It might still be in processing: %s' % processed_file)
+      logging.info(e)
 
 
 def checkIfProcessRunning(processName):
