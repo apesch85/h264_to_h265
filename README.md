@@ -22,7 +22,11 @@ Because this tool does just one thing, usage is very simplified. No web front-en
   
 * Number of concurrent transcoding jobs
   
+  ---
+  
   **Note**: H.265 transcoding is very CPU intensive! It is recommended to keep this number low. For example, an AMD Ryzen 7 5800X handles 3 threads really well. 4 is slightly too many.
+  
+  ---
   
 * The path to the video files
 * The path to the csv file tracking the status of the transcoding jobs
