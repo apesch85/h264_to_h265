@@ -30,7 +30,7 @@ Because this tool does just one thing, usage is very simplified. No web front-en
 * The path to the video files
 * The path to the csv file tracking the status of the transcoding jobs
   
-These configuration settings are set with command line flags. Example usage below -
+These configuration settings are set with command line flags. Example usage below. First, navigate to the directory that is the git repo, run `source bin/activate`, then -
 
 ```bash
   
