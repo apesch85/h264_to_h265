@@ -13,7 +13,7 @@ In fact, these tools all utilize FFmpeg under the hood, aiming themselves at bei
 1. `$ git clone https://github.com/apesch85/h264_to_h265.git`
 2. `$ python3 -m venv h264_to_h265`
 3. `$ source h264_to_h265/bin/activate`
-4. `$ pip install -r requirements.txt`
+4. `$ pip install -r h264_to_h265/requirements.txt`
 
 ## Usage
   
