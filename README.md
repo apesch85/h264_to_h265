@@ -1,6 +1,6 @@
 # H.264 to H.265 transcoder
 
-To be clear, this tool doesn't solve a new problem. Maybe you have some video files that use the H.264 format and you need/want to conver those files to H.265 for <foo reason>. There are a number of alternatives out there! To name only a few...
+To be clear, this tool doesn't solve a new problem. Maybe you have some video files that use the H.264 format and you need/want to convert those files to H.265 for <foo reason>. There are a number of alternatives out there! To name only a few...
   
   * Tdarr
   * Handbrake
