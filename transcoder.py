@@ -104,9 +104,11 @@ def main(unused):
       for index, vid_job in enumerate(transcode_slots):
         logging.info('      Job: %s' % vid_job.video_path)
         if TranscodeChecker(vid_job):
+          transcode_slots[index] = ''
+        if vid_job.tcode_status == 'Completed':
           logging.info('REMOVING: %s' % vid_job.video_path)
           vid_cleaner.CleanFile(vid_job.video_path)
-          transcode_slots[index] = ''
+          
 
   # CSV schema -
   # video_path, tcode_status, format, original_size, added, completed
