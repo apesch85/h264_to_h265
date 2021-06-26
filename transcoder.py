@@ -1,3 +1,4 @@
+#! ./bin/python
 from utilities import converter_util
 from utilities import db_util
 from utilities import file_util
