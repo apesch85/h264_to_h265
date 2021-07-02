@@ -16,6 +16,11 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string('db_path', '', 'Location of the video db')
 flags.DEFINE_string('video_dir', '', 'Destination of video files')
 flags.DEFINE_integer('num_threads', 0, '# of threads to use for ffmpeg jobs')
+flags.DEFINE_boolean(
+  'build_db', 
+  False, 
+  'Indicate whether to build the video file database'
+  )
 
 transcode_slots = []
 status_list = []
@@ -78,8 +83,26 @@ def TranscodeChecker(vid):
     return False
 
 
+def BuildDb():
+  all_files = file_util.GetFiles(FLAGS.video_dir)
+  video_files = file_util.FilterFiles(all_files)[0]
+  db_writer = db_util.Database(FLAGS.db_path, 'w', vid_list=video_files)
+  db_writer.DbWrite()
+
+
 def main(unused):
   del unused 
+
+  if FLAGS.build_db:
+    if not FLAGS.video_dir or not FLAGS.db_path:
+      raise Exception(
+        'You indicated you wanted to build the video file '
+        'database, but you did not specify the video directory and/or the '
+        'database path. Run the program again with "--help" for more info.')
+    BuildDb()
+    if not FLAGS.num_threads:
+      exit
+
   for i in range(FLAGS.num_threads):
     transcode_slots.append('')
     
@@ -110,7 +133,6 @@ def main(unused):
           logging.info('REMOVING: %s' % vid_job.video_path)
           vid_cleaner.CleanFile(vid_job.video_path)
           
-
   # CSV schema -
   # video_path, tcode_status, format, original_size, added, completed
   db = db_util.Database(FLAGS.db_path, 'w', vid_list=status_list)
