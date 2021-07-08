@@ -100,7 +100,7 @@ def main(unused):
         'database, but you did not specify the video directory and/or the '
         'database path. Run the program again with "--help" for more info.')
     BuildDb()
-    if not FLAGS.num_threads:
+    if FLAGS.num_threads == 0:
       exit
 
   for i in range(FLAGS.num_threads):
@@ -135,8 +135,9 @@ def main(unused):
           
   # CSV schema -
   # video_path, tcode_status, format, original_size, added, completed
-  db = db_util.Database(FLAGS.db_path, 'w', vid_list=status_list)
-  db.DbWrite()
+  if not FLAGS.build_db:
+    db = db_util.Database(FLAGS.db_path, 'w', vid_list=status_list)
+    db.DbWrite()
 
 
 if __name__ == '__main__':
